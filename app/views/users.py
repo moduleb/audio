@@ -1,5 +1,6 @@
 from flask import request
 from flask_restx import Namespace, Resource
+import re
 
 from app.container import user_service
 from app.utils.token import generate_token
@@ -13,18 +14,25 @@ class UsersView(Resource):
         # Получаем данные запроса
         data = request.json
 
-        if not 'name' in data:
-            return "Неверный формат запроса", 400
+        if 'name' not in data:
+            return "В запросе отсутствует обязательный параметр 'name'", 400
 
-        if not data.get('name'):
+        # Получаем username из запроса
+        username = data.get('name')
+
+        if not username:
             return "Поле 'name' пустое", 400
 
-        elif user_service.is_exist(data.get('name')):
+        if not re.match(r'^[\w\s-]+$', username):
+            return "Параметр 'name' содержит недопустимые символы"
+
+        if user_service.is_exist(username):
             return "Пользователь с таким именем уже существует", 400
 
-        else:
-            new_user = user_service.create_user(data)
-            return {
-                "uuid": new_user.uuid,
-                "token": generate_token({"name": new_user.name})
-            }
+        # Создаем пользователя
+        new_user = user_service.create_user(username)
+
+        return {
+            "uuid": new_user.uuid,
+            "token": generate_token({"name": username})
+        }

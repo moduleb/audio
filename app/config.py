@@ -18,6 +18,10 @@ class ConfigProduction:
     FLASK_ENV = 'production'
     TESTING = False
     DEBUG = False
+    UPLOAD_FOLDER = './data/'
+    SECRET_KEY = os.urandom(24)
+    SECRET = '$5hfu8Re'
+    ALGO = 'HS256'
 
 if os.environ.get("FLASK_ENV") == "production":
     config = ConfigProduction()
