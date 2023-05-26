@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  flask:
+    build:
+      context: .
+    image: goodwin954/test2_audio
+    ports:
+      - 80:80
+    depends_on:
+      pg:
+        condition: service_healthy
+  pg:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: audio
+      POSTGRES_PASSWORD: audio
+      POSTGRES_DB: audio
+      PGPORT: 5433
+    ports:
+      - 5433:5433
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U audio" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
