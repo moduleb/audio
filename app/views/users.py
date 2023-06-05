@@ -20,7 +20,8 @@ class UsersView(Resource):
         # Возвращаем uuid и token
         return {
             "uuid": new_user.uuid,
-            "token": generate_token({"name": username})
+            "access_token": generate_token({"name": username}),
+            "type_token": "Bearer"
         }
 
 

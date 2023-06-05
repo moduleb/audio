@@ -108,9 +108,9 @@ def get_uuid_from_post_request(request):
 def get_token_from_post_request(request):
 
     # Получаем token из запроса
-    token = request.form.get("token")
+    token = request.headers("Authorization")
 
     if not token:
-        abort(400, "В запросе отсутствует обязательный параметр 'token' или его значение не задано")
+        abort(400, "В запросе отсутствуют данные аутентификации")
 
     return token
