@@ -26,18 +26,12 @@ class UsersView(Resource):
 
 def get_username_from_post_request(request):
     # Получаем данные запроса
-    data = request.json
-
-    if 'name' not in data:
-        abort(400, "В запросе отсутствует обязательный параметр 'name'")
-
-    # Получаем username из запроса
-    username = data.get('name')
+    username = request.form.get('username')
 
     if not username:
-        abort(400, "Поле 'name' пустое")
+        abort(400, "В запросе отсутствует обязательный параметр 'username'")
 
     if not re.match(r'^[\w\s-]+$', username):
-        abort(400, "Параметр 'name' содержит недопустимые символы")
+        abort(400, "Параметр 'username' содержит недопустимые символы")
 
     return username

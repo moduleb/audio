@@ -25,5 +25,5 @@ class Audio (db):
 
 
 # db.metadata.drop_all(engine)
-# db.metadata.create_all(engine)
-# db_session.commit()
+db.metadata.create_all(engine)
+db_session.commit()

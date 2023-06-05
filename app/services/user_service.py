@@ -18,11 +18,8 @@ class UserService:
             abort(404, "Пользователя с таким username не существует")
 
     def get_one_by_uuid(self, uuid: str) -> User:
-        user = self.dao.get_one_by_uuid(uuid)
-        if user:
-            return user
-        else:
-            abort(404, "Пользователя с таким uuid не существует")
+        return self.dao.get_one_by_uuid(uuid)
+
 
     def create_user(self, username: str) -> User:
 

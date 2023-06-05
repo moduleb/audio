@@ -1,11 +1,10 @@
 import uuid
 
 from flask import abort
-from werkzeug.utils import secure_filename
 
 from app.dao.models import Audio, User
 from app.dao.record_dao import RecordDAO
-from app.utils.converter import convert_wav_to_mp3
+from app.converter import convert_wav_to_mp3
 
 
 class RecordService:
@@ -20,14 +19,13 @@ class RecordService:
             5. Сохраняет в базу данных
             6. Возвращает объект Audio  """
 
-        filename = secure_filename(file.filename)
-
-        print(file.filename)
-        print(filename)
+        # filename = secure_filename(file.filename)
+        audio_uuid = uuid.uuid4()
+        filename = audio_uuid
         mp3_file_path = convert_wav_to_mp3(file, filename)
 
         new_audio = Audio(
-            uuid=uuid.uuid4(),
+            uuid=audio_uuid,
             path=mp3_file_path,
             user_id=user.id
         )
